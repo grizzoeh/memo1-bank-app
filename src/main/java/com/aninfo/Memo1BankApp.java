@@ -27,6 +27,9 @@ public class Memo1BankApp {
 	@Autowired
 	private AccountService accountService;
 
+	@Autowired
+	private TransactionService transactionService;
+
 	public static void main(String[] args) {
 		SpringApplication.run(Memo1BankApp.class, args);
 	}
@@ -74,6 +77,34 @@ public class Memo1BankApp {
 	public Account deposit(@PathVariable Long cbu, @RequestParam Double sum) {
 		return accountService.deposit(cbu, sum);
 	}
+
+	//create transaction
+	@PostMapping("/accounts/{cbu}/transactions")
+	@ResponseStatus(HttpStatus.CREATED)
+	public Transaction createTransaction(@RequestBody Transaction transaction) {
+		return TransactionService.createTransaction(transaction);
+	}
+
+	//get transactions
+	@GetMapping("/accounts/{cbu}/transactions")
+	public Collection<Transaction> getTransactions(@PathVariable Long cbu) {
+		return TransactionService.getTransactions(cbu);
+	}
+
+	//get transaction by id
+	@GetMapping("/accounts/{cbu}/transactions/{id}")
+	public ResponseEntity<Transaction> getTransactionById(@PathVariable Long id) {
+		return TransactionService.findById(id);
+	}
+
+
+	//delete transaction by id
+	@DeleteMapping("/accounts/{cbu}/transactions/{id}")
+	public void deleteTransaction(@PathVariable Long id) {
+		TransactionService.deleteById(id);
+	}
+
+
 
 	@Bean
 	public Docket apiDocket() {
