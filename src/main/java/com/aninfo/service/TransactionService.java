@@ -31,6 +31,10 @@ public class TransactionService {
     public Optional<Transaction> findById(Long id) {
         return transactionRepository.findById(id);
     }
+
+    public void deleteById(Long id) {
+        transactionRepository.deleteById(id);
+    }
    
 
 
