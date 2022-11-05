@@ -4,12 +4,12 @@ package com.aninfo.service;
 import javax.transaction.Transactional;
 import java.util.Collection;
 import java.util.Optional;
-import com.aninfo.mode.Transaction;
+import com.aninfo.model.Transaction;
 import com.aninfo.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.aninfo.exeptions.TransactionNegativeSumException;
-import com.aninfo.exeptions.InvalidTransactionTypeException;
+import com.aninfo.exceptions.NegativeTransactionException;
+import com.aninfo.exceptions.InvalidTransactionTypeException;
 
 
 
@@ -27,14 +27,14 @@ public class TransactionService {
     public Transaction createTransaction(Transaction transaction) {
 
         //dont allow negative
-        if (transaction.getAmount() < 0) {
+        if (transaction.getSum() < 0) {
             throw new NegativeTransactionException("Cannot create a transaction with negative sums");
         }
 
         if (transaction.getType().equals("deposit")) {
-            accountService.deposit(transaction.getCbu(), transaction.getAmount());
+            accountService.deposit(transaction.getCbu(), transaction.getSum());
         } else if (transaction.getType().equals("withdraw")) {
-            accountService.withdraw(transaction.getCbu(), transaction.getAmount());
+            accountService.withdraw(transaction.getCbu(), transaction.getSum());
         }else{
             throw new InvalidTransactionTypeException("Invalid transaction type");
         }
@@ -45,13 +45,14 @@ public class TransactionService {
         return transactionRepository.findAll();
     }
 
+    public Collection<Transaction> getTransactionsByCbu(long cbu) {
+        return transactionRepository.findByCbu(cbu);
+    }
+
     public Optional<Transaction> findById(Long id) {
         return transactionRepository.findById(id);
     }
 
-    public Collection<Transaction> findByCbu(Long cbu) {
-        return transactionRepository.findByCbu(cbu);
-    }
 
     public void deleteById(Long id) {
         transactionRepository.deleteById(id);

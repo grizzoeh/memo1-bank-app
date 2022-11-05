@@ -1,7 +1,9 @@
 package com.aninfo;
 
 import com.aninfo.model.Account;
+import com.aninfo.model.Transaction;
 import com.aninfo.service.AccountService;
+import com.aninfo.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -84,33 +86,35 @@ public class Memo1BankApp {
 	@PostMapping("/accounts/{cbu}/transactions")
 	@ResponseStatus(HttpStatus.CREATED)
 	public Transaction createTransaction(@RequestBody Transaction transaction) {
-		return TransactionService.createTransaction(transaction);
+		return transactionService.createTransaction(transaction);
 	}
 
-	//get transactions
+	//get all transactions
+	@GetMapping("/accounts/transactions")
+	public Collection<Transaction> getTransactions() {
+		return transactionService.getTransactions();
+	}
+	//get transaction by cbu
 	@GetMapping("/accounts/{cbu}/transactions")
-	public Collection<Transaction> getTransactions(@PathVariable Long cbu) {
-		return TransactionService.getTransactions(cbu);
+	public Collection<Transaction> getTransactionsByCbu(@PathVariable Long cbu) {
+		return transactionService.getTransactionsByCbu(cbu);
 	}
 
 	//get transaction by id
-	@GetMapping("/accounts/{cbu}/transactions/{id}")
+	@GetMapping("/accounts/transactions/{id}")
 	public ResponseEntity<Transaction> getTransactionById(@PathVariable Long id) {
-		return TransactionService.findById(id);
+		Optional<Transaction> transactionOptional = transactionService.findById(id);
+		return ResponseEntity.of(transactionOptional);
 	}
 
-	//get trnasaction by cbu
-	@GetMapping("/accounts/{cbu}/transactions")
-	public ResponseEntity<Transaction> getTransactionByCbu(@PathVariable Long cbu) {
-		return TransactionService.findByCbu(cbu);
-	}
 
 
 	//delete transaction by id
 	@DeleteMapping("/accounts/{cbu}/transactions/{id}")
 	public void deleteTransaction(@PathVariable Long id) {
-		TransactionService.deleteById(id);
+		transactionService.deleteById(id);
 	}
+
 
 
 
