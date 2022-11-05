@@ -68,15 +68,17 @@ public class Memo1BankApp {
 		accountService.deleteById(cbu);
 	}
 
-	@PutMapping("/accounts/{cbu}/withdraw")
-	public Account withdraw(@PathVariable Long cbu, @RequestParam Double sum) {
-		return accountService.withdraw(cbu, sum);
-	}
+	//WITHDRAW Y DEPOSIT NO CUMPLEN CON API REST AL SER ACCIONES SOBRE UN RECURSO
+    //REEMPLAZO ESTA LOGICA CREANDO TRANSACCION!!!!!!!
+	// @PutMapping("/accounts/{cbu}/withdraw")
+	// public Account withdraw(@PathVariable Long cbu, @RequestParam Double sum) {
+	// 	return accountService.withdraw(cbu, sum);
+	// }
 
-	@PutMapping("/accounts/{cbu}/deposit")
-	public Account deposit(@PathVariable Long cbu, @RequestParam Double sum) {
-		return accountService.deposit(cbu, sum);
-	}
+	// @PutMapping("/accounts/{cbu}/deposit")
+	// public Account deposit(@PathVariable Long cbu, @RequestParam Double sum) {
+	// 	return accountService.deposit(cbu, sum);
+	// }
 
 	//create transaction
 	@PostMapping("/accounts/{cbu}/transactions")
@@ -95,6 +97,12 @@ public class Memo1BankApp {
 	@GetMapping("/accounts/{cbu}/transactions/{id}")
 	public ResponseEntity<Transaction> getTransactionById(@PathVariable Long id) {
 		return TransactionService.findById(id);
+	}
+
+	//get trnasaction by cbu
+	@GetMapping("/accounts/{cbu}/transactions")
+	public ResponseEntity<Transaction> getTransactionByCbu(@PathVariable Long cbu) {
+		return TransactionService.findByCbu(cbu);
 	}
 
 
