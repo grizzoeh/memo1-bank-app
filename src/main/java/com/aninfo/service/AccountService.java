@@ -72,7 +72,7 @@ public class AccountService {
     //function for promo Bank account promo, get 10% extra in your $2000+ deposits, up to $500
     public Double promo(Double sum) {
         Double sum_extra = 0.0;
-        if (sum > 2000) {
+        if (sum >= 2000) {
             sum_extra = (sum * 0.1);
             if (sum_extra > 500) {
                 sum_extra = 500.0;
