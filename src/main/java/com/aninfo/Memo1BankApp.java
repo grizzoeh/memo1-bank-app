@@ -70,7 +70,7 @@ public class Memo1BankApp {
 		accountService.deleteById(cbu);
 	}
 
-	//WITHDRAW Y DEPOSIT NO CUMPLEN CON API REST AL SER ACCIONES SOBRE UN RECURSO
+	//WITHDRAW Y DEPOSIT NO CUMPLEN CON API REST AL TENER VERBOS EN LAS URLs
     //REEMPLAZO ESTA LOGICA CREANDO TRANSACCION!!!!!!!
 	// @PutMapping("/accounts/{cbu}/withdraw")
 	// public Account withdraw(@PathVariable Long cbu, @RequestParam Double sum) {
